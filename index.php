@@ -13,58 +13,49 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
     <?php
-    function passwordGen($arg1)
-    {
-        $pass = "";
-        for ($i = 0; $i < $arg1; $i++) {
-            $n = rand(48, 122);
-            $pass .= chr($n);
-        };
-        return $pass;
-    };
-    $length = $_GET["length"];
+    // require helper.php
+    require_once __DIR__ . "/libs/helper.php";
+
+    // start session
+    session_start();
+
+    // redirect when submit
+    if ($length != false) {
+
+        $_SESSION['password'] = passwordGen($length, $isAlpha, $isNum, $isSymb);
+        header('Location: ./result.php');
+    }
     ?>
 </head>
 
 <body>
-    <main class="d-sm-flex flex-column align-items-center pt-5">
-        <div class="container col-sm-8 rounded-4 p-3 bg-secondary bg-opacity-10 mb-3">
-            <h1>Strong Password Generator</h1>
-            <form>
-                <div class="mb-3">
-                    <label for="" class="form-label">Length of password</label>
-                    <small id="helpId" class="form-text text-muted">(default is 8)</small>
-                    <input type="number" class="form-control" aria-describedby="helpId" placeholder="example: 8" name="length" value="8">
-                    <small id="helpId" class="form-text text-muted">Only digits</small>
+    <div class="container col-sm-8 rounded-4 p-3 bg-secondary bg-opacity-10 my-5">
+        <h1>Strong Password Generator</h1>
+        <form>
+            <div class="mb-3">
+                <label for="" class="form-label">Length of password</label>
+                <small id="helpId" class="form-text text-muted">(default is 8)</small>
+                <input type="number" class="form-control" aria-describedby="helpId" placeholder="example: 8" name="length" value="8">
+                <small id="helpId" class="form-text text-muted">Only digits</small>
+            </div>
+            <fieldset>
+                <div class="mb-1 form-check">
+                    <input type="checkbox" class="form-check-input" name="alphabet" checked>
+                    <label class="form-check-label" for="exampleCheck1">include alphabet</label>
                 </div>
-                <fieldset disabled="disabled">
-                    <div class="mb-1 form-check">
-                        <input type="checkbox" class="form-check-input" id="" checked>
-                        <label class="form-check-label" for="exampleCheck1">include letters</label>
-                    </div>
-                    <div class="mb-1 form-check">
-                        <input type="checkbox" class="form-check-input" id="" checked>
-                        <label class="form-check-label" for="exampleCheck1">include numbers</label>
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="" checked>
-                        <label class="form-check-label" for="exampleCheck1">include symbols</label>
-                    </div>
-                </fieldset>
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-danger">Reset</button>
-            </form>
-        </div>
-        <div class="container col-sm-8 rounded-4 p-3 bg-secondary bg-opacity-10">
-            <h2>Your password is
-                <span class="badge bg-light">
-                    <code>
-                        <?php echo passwordGen($length); ?>
-                    </code>
-                </span>
-            </h2>
-        </div>
-    </main>
+                <div class="mb-1 form-check">
+                    <input type="checkbox" class="form-check-input" name="number">
+                    <label class="form-check-label" for="exampleCheck1">include numbers</label>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" name="symbol">
+                    <label class="form-check-label" for="exampleCheck1">include symbols</label>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-danger">Reset</button>
+        </form>
+    </div>
 </body>
 
 </html>
