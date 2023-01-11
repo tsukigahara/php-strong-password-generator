@@ -19,10 +19,13 @@
     // start session
     session_start();
 
-    // redirect when submit
+    // redirect when submit 
     if ($length != false) {
 
+        // add generated password to session array
         $_SESSION['password'] = passwordGen($length, $isAlpha, $isNum, $isSymb);
+
+        // redirect to result.php
         header('Location: ./result.php');
     }
     ?>
